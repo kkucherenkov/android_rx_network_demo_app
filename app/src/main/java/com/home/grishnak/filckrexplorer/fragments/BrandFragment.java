@@ -2,8 +2,8 @@ package com.home.grishnak.filckrexplorer.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -88,7 +88,9 @@ public class BrandFragment extends ListFragment {
 
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.container, CameraFragment.newInstance(brand.getId()))
+                .replace(R.id.container, CameraFragment.newInstance(brand.getId()))
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null)
                 .commit();
     }
 
