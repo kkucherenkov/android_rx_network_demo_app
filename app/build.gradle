@@ -1,0 +1,77 @@
+apply plugin: 'com.android.application'
+apply plugin: 'retrolambda'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.home.grishnak.filckrexplorer"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'LICENSE.txt'
+    }
+
+}
+
+retrolambda {
+    jdk "/Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home"
+    oldJdk "/Library/Java/JavaVirtualMachines/jdk1.7.0_75.jdk/Contents/Home"
+    javaVersion JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.netflix.rxjava:rxjava-core:0.19.6'
+    compile 'com.netflix.rxjava:rxjava-android:0.19.6'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.5'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.4.5'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.4.5'
+    compile 'com.squareup.retrofit:retrofit:1.6.1'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+}
+
+
+// Get location of adb
+Properties localProperties = new Properties()
+try {
+    localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+}
+catch (ex) {
+    throw new InvalidUserDataException("You should define the path to your Android SDK as a " +
+            "property `sdk.dir` in local.properties on the project root."
+    )
+}
+def adb = localProperties.getProperty('sdk.dir') + '/platform-tools/adb'
+
+
+task runDebug(dependsOn: 'installDebug') {
+    description 'Runs the debug-flavour of the app on the connected device'
+    doLast {
+        exec{commandLine "$adb", "shell", "am", "start", "-n", "com.home.grishnak.filckrexplorer/.MainActivity"}
+    }
+}
+
