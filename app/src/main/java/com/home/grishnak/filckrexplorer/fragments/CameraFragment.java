@@ -2,31 +2,34 @@ package com.home.grishnak.filckrexplorer.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.home.grishnak.filckrexplorer.model.FlickrModel;
-import com.home.grishnak.filckrexplorer.model.pojo.Brand;
 import com.home.grishnak.filckrexplorer.model.pojo.Camera;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
-public class CameraFragment extends ListFragment {
+public class CameraFragment extends BaseFragment {
 
     private static final String BRAND_PARAM = "brand_fragment_parameter";
-
+    @Inject
+    FlickrModel flickrModel;
     private String mBrand;
 
-    private BrandFragment.OnFragmentInteractionListener mListener;
-
-    private FlickrModel flickrModel;
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public CameraFragment() {
+    }
 
     public static CameraFragment newInstance(String brand) {
         CameraFragment fragment = new CameraFragment();
@@ -34,13 +37,6 @@ public class CameraFragment extends ListFragment {
         args.putString(BRAND_PARAM, brand);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public CameraFragment() {
     }
 
     @Override
@@ -51,7 +47,6 @@ public class CameraFragment extends ListFragment {
             mBrand = getArguments().getString(BRAND_PARAM);
         }
 
-        flickrModel = FlickrModel.getInstance();
         flickrModel.getCamerasOfBrand(mBrand)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -68,7 +63,7 @@ public class CameraFragment extends ListFragment {
 
                     @Override
                     public void onNext(List<Camera> list) {
-                        setListAdapter(new ArrayAdapter(
+                        setListAdapter(new ArrayAdapter<>(
                                 getActivity(),
                                 android.R.layout.simple_list_item_1,
                                 android.R.id.text1,
@@ -82,18 +77,11 @@ public class CameraFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (BrandFragment.OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
 

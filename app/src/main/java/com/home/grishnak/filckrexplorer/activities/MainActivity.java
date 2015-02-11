@@ -1,14 +1,13 @@
-package com.home.grishnak.filckrexplorer;
+package com.home.grishnak.filckrexplorer.activities;
 
-import android.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.home.grishnak.filckrexplorer.R;
 import com.home.grishnak.filckrexplorer.fragments.BrandFragment;
 
-public class MainActivity extends ActionBarActivity implements BrandFragment.OnFragmentInteractionListener{
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +45,4 @@ public class MainActivity extends ActionBarActivity implements BrandFragment.OnF
     }
 
 
-    @Override
-    public void onFragmentInteraction(String id) {
-
-    }
 }

@@ -6,36 +6,27 @@ import com.home.grishnak.filckrexplorer.model.pojo.BrandSearchResult;
 import com.home.grishnak.filckrexplorer.model.pojo.Camera;
 import com.home.grishnak.filckrexplorer.model.pojo.CameraSearchResult;
 import com.home.grishnak.filckrexplorer.network.ApiConstants;
-import com.home.grishnak.filckrexplorer.network.FlickrApi;
+import com.home.grishnak.filckrexplorer.network.FlickrApiService;
 
-import java.util.IllegalFormatException;
 import java.util.List;
 
-import rx.Notification;
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.Subscriber;
 
 public class FlickrModel {
-    private static FlickrModel instance;
 
-    public static FlickrModel getInstance() {
-        if (instance == null) {
-            synchronized (FlickrModel.class) {
-                if (instance == null) {
-                    instance = new FlickrModel();
-                }
-            }
-        }
-        return instance;
+    @Inject
+    FlickrApiService flickrApiService;
+
+    public FlickrModel(FlickrApiService flickrApiService) {
+        this.flickrApiService = flickrApiService;
     }
-
-    private FlickrModel() {}
-
-
 
     public Observable<List<Brand>> getBrands() {
         return Observable.create((Subscriber<? super BrandSearchResult> subscriber) -> {
-            subscriber.onNext(FlickrApi.getInstance().getBrands());
+            subscriber.onNext(flickrApiService.getBrands(ApiConstants.FLICKR_KEY));
             subscriber.onCompleted();
         }).doOnNext((searchResult)->{
             if (!searchResult.stat.equals(ApiConstants.OK_STATE)) {
@@ -47,7 +38,7 @@ public class FlickrModel {
 
     public Observable<List<Camera>> getCamerasOfBrand(String brandId) {
         return Observable.create((Subscriber<? super CameraSearchResult> subscriber) -> {
-            subscriber.onNext(FlickrApi.getInstance().getCameras(brandId));
+            subscriber.onNext(flickrApiService.getBrandCameras(ApiConstants.FLICKR_KEY, brandId));
             subscriber.onCompleted();
         }).map(CameraSearchResult::getCameras);
     }

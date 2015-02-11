@@ -3,11 +3,9 @@ package com.home.grishnak.filckrexplorer.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 
 import com.home.grishnak.filckrexplorer.R;
 import com.home.grishnak.filckrexplorer.model.FlickrModel;
@@ -15,27 +13,28 @@ import com.home.grishnak.filckrexplorer.model.pojo.Brand;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class BrandFragment extends ListFragment {
-    private OnFragmentInteractionListener mListener;
-    private FlickrModel flickrModel;
+public class BrandFragment extends BaseFragment {
+    @Inject
+    FlickrModel flickrModel;
+
+    public BrandFragment() {
+
+    }
 
     // TODO: Rename and change types of parameters
     public static BrandFragment newInstance() {
         return new BrandFragment();
     }
 
-    public BrandFragment() {
-
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        flickrModel = FlickrModel.getInstance();
         flickrModel.getBrands()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,7 +51,7 @@ public class BrandFragment extends ListFragment {
 
                     @Override
                     public void onNext(List<Brand> list) {
-                        setListAdapter(new ArrayAdapter(
+                        setListAdapter(new ArrayAdapter<>(
                                 getActivity(),
                                 android.R.layout.simple_list_item_1,
                                 android.R.id.text1,
@@ -66,18 +65,11 @@ public class BrandFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
 
@@ -92,10 +84,6 @@ public class BrandFragment extends ListFragment {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(String id);
     }
 
 }
