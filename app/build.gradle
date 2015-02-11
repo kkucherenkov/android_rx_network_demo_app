@@ -52,6 +52,8 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 }
 
 
@@ -60,7 +62,7 @@ Properties localProperties = new Properties()
 try {
     localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
 }
-catch (ex) {
+catch (ignored) {
     throw new InvalidUserDataException("You should define the path to your Android SDK as a " +
             "property `sdk.dir` in local.properties on the project root."
     )
@@ -69,9 +71,10 @@ def adb = localProperties.getProperty('sdk.dir') + '/platform-tools/adb'
 
 
 task runDebug(dependsOn: 'installDebug') {
-    description 'Runs the debug-flavour of the app on the connected device'
-    doLast {
-        exec{commandLine "$adb", "shell", "am", "start", "-n", "com.home.grishnak.filckrexplorer/.MainActivity"}
-    }
-}
+            description 'Runs the debug-flavour of the app on the connected device'
+            doLast
+                    {
+                        exec{commandLine "$adb", "shell", "am", "start", "-n", "com.home.grishnak.filckrexplorer/.MainActivity"}
+                    }
+        }
 
