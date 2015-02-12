@@ -9,7 +9,7 @@ import com.home.grishnak.filckrexplorer.fragments.BrandFragment;
 import com.home.grishnak.filckrexplorer.fragments.CameraFragment;
 import com.home.grishnak.filckrexplorer.model.FlickrModel;
 import com.home.grishnak.filckrexplorer.network.ApiConstants;
-import com.home.grishnak.filckrexplorer.network.FlickrApiService;
+import com.home.grishnak.filckrexplorer.network.FlickrApi;
 import com.home.grishnak.filckrexplorer.network.JacksonConverter;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
@@ -39,7 +39,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public FlickrApiService providesFlickrApiService() {
+    public FlickrApi providesFlickrApiService() {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(ApiConstants.HTTP_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
         okHttpClient.setReadTimeout(ApiConstants.HTTP_READ_TIMEOUT, TimeUnit.MILLISECONDS);
@@ -57,13 +57,13 @@ public class ApplicationModule {
                 .setConverter(new JacksonConverter())
                 .setClient(new OkClient(okHttpClient))
                 .build();
-        return restAdapter.create(FlickrApiService.class);
+        return restAdapter.create(FlickrApi.class);
 
     }
 
     @Provides
     @Singleton
-    public FlickrModel providesFlickrModel(FlickrApiService service) {
+    public FlickrModel providesFlickrModel(FlickrApi service) {
         return new FlickrModel(service);
     }
 }
