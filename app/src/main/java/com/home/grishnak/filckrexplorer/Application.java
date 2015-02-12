@@ -4,8 +4,7 @@ import com.home.grishnak.filckrexplorer.Modules.ApplicationModule;
 
 import dagger.ObjectGraph;
 
-
-public class App extends android.app.Application {
+public class Application extends android.app.Application {
     private ObjectGraph objectGraph;
 
     @Override

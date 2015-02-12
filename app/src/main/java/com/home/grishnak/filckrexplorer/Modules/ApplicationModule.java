@@ -3,7 +3,7 @@ package com.home.grishnak.filckrexplorer.Modules;
 import android.content.Context;
 import android.util.Log;
 
-import com.home.grishnak.filckrexplorer.App;
+import com.home.grishnak.filckrexplorer.Application;
 import com.home.grishnak.filckrexplorer.activities.MainActivity;
 import com.home.grishnak.filckrexplorer.fragments.BrandFragment;
 import com.home.grishnak.filckrexplorer.fragments.CameraFragment;
@@ -33,7 +33,7 @@ public class ApplicationModule {
 
     private Context application;
 
-    public ApplicationModule(App application) {
+    public ApplicationModule(Application application) {
         this.application = application;
     }
 
