@@ -13,7 +13,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.Subscriber;
 
 public class FlickrModel {
 
@@ -25,21 +24,17 @@ public class FlickrModel {
     }
 
     public Observable<List<Brand>> getBrands() {
-        return Observable.create((Subscriber<? super BrandSearchResult> subscriber) -> {
-            subscriber.onNext(flickrApi.getBrands(ApiConstants.FLICKR_KEY));
-            subscriber.onCompleted();
-        }).doOnNext((searchResult)->{
-            if (!searchResult.stat.equals(ApiConstants.OK_STATE)) {
-                throw new IllegalStateException("get brands error");
-            }
-        }).map(BrandSearchResult::getBrands);
+        return flickrApi.getBrands(ApiConstants.FLICKR_KEY)
+                .doOnNext((searchResult) -> {
+                    if (!searchResult.stat.equals(ApiConstants.OK_STATE)) {
+                        throw new IllegalStateException("get brands error");
+                    }
+                }).map(BrandSearchResult::getBrands);
 
     }
 
     public Observable<List<Camera>> getCamerasOfBrand(String brandId) {
-        return Observable.create((Subscriber<? super CameraSearchResult> subscriber) -> {
-            subscriber.onNext(flickrApi.getBrandCameras(ApiConstants.FLICKR_KEY, brandId));
-            subscriber.onCompleted();
-        }).map(CameraSearchResult::getCameras);
+        return flickrApi.getBrandCameras(ApiConstants.FLICKR_KEY, brandId)
+                .map(CameraSearchResult::getCameras);
     }
 }
