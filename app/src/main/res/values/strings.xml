@@ -6,5 +6,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_events">events</string>
+    <string name="navigation_repos">repos</string>
+    <string name="navigation_starred_repos">starred</string>
+    <string name="navigation_watched_repos">watched</string>
+    <string name="navigation_people">people</string>
+    <string name="navigation_settings">settings</string>
 
 </resources>

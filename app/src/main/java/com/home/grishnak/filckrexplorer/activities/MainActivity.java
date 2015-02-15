@@ -1,30 +1,32 @@
 package com.home.grishnak.filckrexplorer.activities;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import android.support.annotation.NonNull;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.home.grishnak.filckrexplorer.R;
+import com.home.grishnak.filckrexplorer.activities.base.BaseActivity;
 import com.home.grishnak.filckrexplorer.fragments.BrandFragment;
+import com.home.grishnak.filckrexplorer.fragments.MenuFragment;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MenuFragment.OnMenuItemSelectedListener {
 
-    @InjectView(R.id.drawer) DrawerLayout drawer;
+    private MenuFragment menuFragment;
+    private BrandFragment brandFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.inject(this);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.container, BrandFragment.newInstance())
-                    .commit();
-        }
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        menuFragment = MenuFragment.newInstance();
+        menuFragment.setOnMenuItemSelectedListener(this);
+        ft.replace(R.id.menuContent, menuFragment);
+        ft.commit();
     }
 
     @Override
@@ -32,28 +34,83 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu);
+
+        if (getToolbar() != null) {
+            getToolbar().inflateMenu(R.menu.menu_main);
+        }
+
+        return true;
+    }
+
+    private void setFragment(Fragment fragment) {
+        setFragment(fragment, false);
+    }
+
+
+    private void setFragment(Fragment fragment, boolean addToBackStack) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content, fragment);
+        if (addToBackStack) {
+            ft.addToBackStack(null);
+        }
+        ft.commit();
+    }
+
+    @Override
+    public boolean onProfileSelected() {
+
+        return false;
+    }
+
+    @Override
+    public boolean onReposSelected() {
+        if (brandFragment == null) {
+            brandFragment = BrandFragment.newInstance();
+        }
+
+        setFragment(brandFragment);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public boolean onStarredSelected() {
+        return true;
     }
 
+    @Override
+    public boolean onWatchedSelected() {
+        return true;
+    }
+
+    @Override
+    public boolean onPeopleSelected() {
+        return false;
+    }
+
+    @Override
+    public void onMenuItemSelected(@NonNull com.home.grishnak.filckrexplorer.model.menu.MenuItem item, boolean changeTitle) {
+        if (changeTitle) {
+            setTitle(item.text);
+        }
+        closeMenu();
+    }
+
+    @Override
+    public boolean onUserEventsSelected() {
+        return false;
+    }
+
+    @Override
+    public boolean onSettingsSelected() {
+        return false;
+    }
+
+    @Override
+    public boolean onAboutSelected() {
+        return false;
+    }
 
 }

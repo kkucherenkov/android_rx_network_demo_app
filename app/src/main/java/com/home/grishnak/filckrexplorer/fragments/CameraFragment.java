@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.home.grishnak.filckrexplorer.fragments.base.BaseListFragment;
 import com.home.grishnak.filckrexplorer.model.FlickrModel;
 import com.home.grishnak.filckrexplorer.model.pojo.Camera;
 
@@ -17,7 +18,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class CameraFragment extends BaseFragment {
+public class CameraFragment extends BaseListFragment {
 
     private static final String BRAND_PARAM = "brand_fragment_parameter";
     @Inject
