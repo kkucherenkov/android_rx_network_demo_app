@@ -1,11 +1,11 @@
-package com.home.grishnak.filckrexplorer.fragments;
+package com.home.grishnak.filckrexplorer.fragments.base;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 
 import com.home.grishnak.filckrexplorer.Application;
 
-public abstract class BaseFragment extends ListFragment {
+public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

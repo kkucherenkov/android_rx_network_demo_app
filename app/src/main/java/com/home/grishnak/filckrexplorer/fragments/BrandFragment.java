@@ -1,13 +1,14 @@
 package com.home.grishnak.filckrexplorer.fragments;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.home.grishnak.filckrexplorer.R;
+import com.home.grishnak.filckrexplorer.fragments.base.BaseListFragment;
 import com.home.grishnak.filckrexplorer.model.FlickrModel;
 import com.home.grishnak.filckrexplorer.model.pojo.Brand;
 
@@ -19,7 +20,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class BrandFragment extends BaseFragment {
+public class BrandFragment extends BaseListFragment {
     @Inject
     FlickrModel flickrModel;
 
@@ -80,7 +81,7 @@ public class BrandFragment extends BaseFragment {
 
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, CameraFragment.newInstance(brand.getId()))
+                .replace(R.id.content, CameraFragment.newInstance(brand.getId()))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(null)
                 .commit();
