@@ -1,24 +1,35 @@
 package com.home.grishnak.filckrexplorer.activities;
 
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.home.grishnak.filckrexplorer.R;
 import com.home.grishnak.filckrexplorer.fragments.BrandFragment;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class MainActivity extends BaseActivity {
+
+    @InjectView(R.id.drawer) DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.container, BrandFragment.newInstance())
                     .commit();
         }
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_main;
     }
 
 
